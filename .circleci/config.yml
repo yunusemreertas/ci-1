@@ -45,4 +45,5 @@ workflows:
             - test-node
       - deploy:
           requires:
-            - build-node
+            - verify-client-build
+
