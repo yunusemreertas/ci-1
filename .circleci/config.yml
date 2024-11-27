@@ -13,8 +13,8 @@ jobs:
           pkg-manager: npm
       - run:
           name: Run tests
-          command: npm test --passWithNoTests
-  build-node:
+          command: npm test
+  verify-client-build:
     # Build node project
     executor: node/default
     steps:
@@ -23,25 +23,16 @@ jobs:
           pkg-manager: npm
       - run:
           command: npm run build
-      - run:
-          name: Create the ~/artifacts directory if it doesn't exist
-          command: mkdir -p ~/artifacts
-      # Copy output to artifacts dir
-      - run:
-          name: Copy artifacts
-          command: cp -R build dist public .output .next .docusaurus ~/artifacts 2>/dev/null || true
-      - store_artifacts:
-          path: ~/artifacts
-          destination: node-build
   deploy:
     # This is an example deploy job, not actually used by the workflow
     docker:
-      - image: cimg/base:stable
+      - image: cimg/base:current
     steps:
-      # Replace this with steps to deploy to users
       - run:
-          name: deploy
-          command: '#e.g. ./deploy.sh'
+          name: Deploy to Render Staging
+          command: |
+            echo "Deploying to Render Staging"
+            curl $RENDER_STAGING_DEPLOYHOOK
 workflows:
   build-and-test:
     jobs:
@@ -49,6 +40,6 @@ workflows:
       - build-node:
           requires:
             - test-node
-    # - deploy:
-    #     requires:
-    #       - build-node
+      - deploy:
+          requires:
+            - build-node
