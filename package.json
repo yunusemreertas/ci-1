@@ -1,0 +1,23 @@
+{
+  "name": "baja-blast-ci",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "concurrently \"cd server && npm run watch\" \"cd client && npm run dev\"",
+    "install": "cd server && npm i && cd ../client && npm i",
+    "seed": "cd server && npm run seed",
+    "build": "cd client && npm run build",
+    "mongo:down": "docker compose -f docker/mongo.yml down -v",
+    "mongo:up": "docker compose -f docker/mongo.yml up -d",
+    "mongo:reset": "npm run db:down && npm run db:up",
+    "test": "cd server && npm run test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+}
