@@ -36,8 +36,11 @@ jobs:
 workflows:
   build-and-test:
     jobs:
-      - test-node
-      - build-node:
+      - test-node:
+          filters:
+            branches:
+              only: main
+      - verify-client-build:
           requires:
             - test-node
       - deploy:
